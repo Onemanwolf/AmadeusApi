@@ -1,0 +1,16 @@
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\bin\Debug\netcoreapp2.2\appsettings.Development.json
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\bin\Debug\netcoreapp2.2\appsettings.json
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\bin\Debug\netcoreapp2.2\BooksAPi.deps.json
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\bin\Debug\netcoreapp2.2\BooksAPi.runtimeconfig.json
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\bin\Debug\netcoreapp2.2\BooksAPi.runtimeconfig.dev.json
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\bin\Debug\netcoreapp2.2\BooksAPi.dll
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\obj\Debug\netcoreapp2.2\BooksAPi.csprojAssemblyReference.cache
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\obj\Debug\netcoreapp2.2\BooksAPi.RazorAssemblyInfo.cache
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\obj\Debug\netcoreapp2.2\BooksAPi.RazorAssemblyInfo.cs
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\obj\Debug\netcoreapp2.2\BooksAPi.AssemblyInfoInputs.cache
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\obj\Debug\netcoreapp2.2\BooksAPi.AssemblyInfo.cs
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\obj\Debug\netcoreapp2.2\BooksAPi.RazorTargetAssemblyInfo.cache
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\bin\Debug\netcoreapp2.2\BooksAPi.pdb
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\obj\Debug\netcoreapp2.2\BooksAPi.dll
+C:\Users\tioleson\source\repos\BooksAPi\BooksAPi\obj\Debug\netcoreapp2.2\BooksAPi.pdb
