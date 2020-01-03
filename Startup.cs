@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace ReservationApi
 {
@@ -37,11 +38,11 @@ namespace ReservationApi
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
              .AddJwtBearer(options =>
              {
-                // base-address of your identityserver
-                options.Authority = "https://localhost:5001/";
+                 // base-address of your identityserver
+                 options.Authority = "https://localhost:5001/";
 
-                // name of the API resource
-                options.Audience = "reservationapi";
+                 // name of the API resource
+                 options.Audience = "reservationapi";
              });
 
             //Session 1
@@ -57,12 +58,23 @@ namespace ReservationApi
             services.Configure<ReservationDataBaseSettings>(
                 Configuration.GetSection(nameof(ReservationDataBaseSettings)));
 
+            //configure mongodb connection and register an instance of IMongoCollection for use in service
+            services.AddScoped<IMongoCollection<Reservation>>(sp =>
+            {
+                var config = Configuration.GetSection("ReservationDataBaseSettings");
+
+                var client = new MongoClient(config.GetValue<string>("ConnectionString"));
+                var database = client.GetDatabase(config.GetValue<string>("DatabaseName"));
+
+                return database.GetCollection<Reservation>(config.GetValue<string>("ReservationCollectionName"));
+            });
+
             services.AddSingleton<IReservationDataSettings>(sp =>
                 sp.GetRequiredService<IOptions<ReservationDataBaseSettings>>().Value);
 
             services.AddSingleton<ReservationService>();
 
-           
+
 
         }
 
@@ -76,7 +88,7 @@ namespace ReservationApi
             else
             {
 
-                
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
