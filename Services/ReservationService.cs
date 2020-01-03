@@ -10,7 +10,7 @@ namespace ReservationApi.Services
     public class ReservationService : IReservationService
     {
 
-
+        //Session 1
 
         //In the code below, an IBookstoreDatabaseSettings instance is retrieved from DI via constructor 
         //injection. This technique provides access to the appsettings.json configuration values that were added 

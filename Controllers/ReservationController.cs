@@ -12,6 +12,8 @@ namespace ReservationApi.Controllers
 {
 
 
+    //Session 1
+
     //Uses the BookService class to perform CRUD operations.
     //Contains action methods to support GET, POST, PUT, and DELETE HTTP requests.
     //Calls CreatedAtRoute in the Create action method to return an HTTP 201 response.Status 
@@ -35,7 +37,7 @@ namespace ReservationApi.Controllers
         {
             _reservationService = bookService;
         }
-        [Authorize]
+        [Authorize]  //Session 3
         [HttpGet]
         public ActionResult<List<Reservation>> Get() => _reservationService.Get();
 
