@@ -37,7 +37,7 @@ namespace ReservationApi.Controllers
         {
             _reservationService = bookService;
         }
-        [Authorize]  //Session 3
+       [Authorize]  //Session 3
         [HttpGet]
         public ActionResult<List<Reservation>> Get() => _reservationService.Get();
 
