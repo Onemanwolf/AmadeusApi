@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ReservationApi.Models;
 using ReservationApi.Services;
@@ -68,11 +67,6 @@ namespace ReservationApi
             //The IBookstoreDatabaseSettings interface is registered in DI with a singleton service lifetime.When 
             //injected, the interface instance resolves to a BookstoreDatabaseSettings object.
 
-
-            // requires using Microsoft.Extensions.Options
-            services.Configure<ReservationDataBaseSettings>(
-                Configuration.GetSection(nameof(ReservationDataBaseSettings)));
-
             //configure mongodb connection and register an instance of IMongoCollection for use in service
             services.AddScoped<IMongoCollection<Reservation>>(sp =>
             {
@@ -84,13 +78,7 @@ namespace ReservationApi
                 return database.GetCollection<Reservation>(config.GetValue<string>("ReservationCollectionName"));
             });
 
-            services.AddSingleton<IReservationDataSettings>(sp =>
-                sp.GetRequiredService<IOptions<ReservationDataBaseSettings>>().Value);
-
-            services.AddSingleton<ReservationService>();
-
-
-
+            services.AddScoped<ReservationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

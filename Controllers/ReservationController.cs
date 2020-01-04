@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReservationApi.Models;
 using ReservationApi.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace ReservationApi.Controllers
 {
@@ -20,7 +16,7 @@ namespace ReservationApi.Controllers
     //code 201 is the standard response for an HTTP POST method that creates a new resource on 
     //the server.CreatedAtRoute also adds a Location header to the response. The Location header 
     //specifies the URI of the newly created book.
-   
+
 
 
 
@@ -32,16 +28,16 @@ namespace ReservationApi.Controllers
     {
 
         private readonly ReservationService _reservationService;
-     
+
         public ReservationController(ReservationService bookService)
         {
             _reservationService = bookService;
         }
-       [Authorize]  //Session 3
+        [Authorize]  //Session 3
         [HttpGet]
         public ActionResult<List<Reservation>> Get() => _reservationService.Get();
 
-                                    
+
         [HttpGet("{id:length(24)}", Name = "GetReservation")]
         public ActionResult<Reservation> Get(string id)
         {
