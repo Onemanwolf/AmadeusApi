@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ReservationApi.Models;
 using ReservationApi.Services;
+using Serilog;
+using Serilog.Core;
+using System;
 using System.Collections.Generic;
 
 namespace ReservationApi.Controllers
@@ -28,14 +31,23 @@ namespace ReservationApi.Controllers
     {
 
         private readonly ReservationService _reservationService;
+        
 
         public ReservationController(ReservationService bookService)
         {
             _reservationService = bookService;
+            
         }
         [Authorize]  //Session 3
         [HttpGet]
-        public ActionResult<List<Reservation>> Get() => _reservationService.Get();
+        public ActionResult<List<Reservation>> Get() {
+           
+           var reservations = _reservationService.Get();
+
+            Log.Information($"In My Reservation the controller:: {reservations} {DateTime.UtcNow}!");
+
+            return reservations;
+        } 
 
 
         [HttpGet("{id:length(24)}", Name = "GetReservation")]
