@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
-using ReservationApi.DependencyInjection;
-using ReservationApi.Models;
-using ReservationApi.Repos;
+using ReservationApi.Data.EFCore.DependencyInjection;
+using ReservationApi.Data.MongoDb.DependencyInjection;
 using ReservationApi.Services;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -100,7 +98,8 @@ namespace ReservationApi
             //configure mongodb connection and register an instance of IMongoCollection for use in service
 
             services.AddScoped<ReservationService>();
-            services.AddEFCoreDatabaseSupport(Configuration);
+            //services.AddEFCoreDatabaseSupport(Configuration);
+            services.AddMongoDatabaseSupport(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
