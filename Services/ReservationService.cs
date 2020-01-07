@@ -2,6 +2,7 @@
 using ReservationApi.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ReservationApi.Services
 {
@@ -21,11 +22,11 @@ namespace ReservationApi.Services
             _reservation = collection;
         }
 
-        public List<Reservation> Get() =>
-           _reservation.Find(reservation => true).ToList();
+        public async Task<List<Reservation>> Get() =>
+          await _reservation.Find(reservation => true).ToListAsync().ConfigureAwait(true);
 
-        public Reservation Get(string id) =>
-            _reservation.Find<Reservation>(book => book.Id == id).FirstOrDefault();
+        public async Task<Reservation> Get(string id) =>
+         await   _reservation.Find<Reservation>(book => book.Id == id).FirstOrDefaultAsync().ConfigureAwait(true);
 
         public Reservation Create(Reservation reservation)
         {

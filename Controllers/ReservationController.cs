@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Configuration;
 using ReservationApi.Models;
 using ReservationApi.Services;
@@ -7,6 +8,7 @@ using Serilog;
 using Serilog.Core;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ReservationApi.Controllers
 {
@@ -43,9 +45,9 @@ namespace ReservationApi.Controllers
         }
         [Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
         [HttpGet]
-        public ActionResult<List<Reservation>> Get() {
+        public async Task<ActionResult<List<Reservation>>> Get() {
             var c = _config["ConnectionString"];
-           var reservations = _reservationService.Get();
+           var reservations =  await _reservationService.Get().ConfigureAwait(true);
             //Session 2\
             Log.Information($"Config Secret: {c}");
             Log.Information($"In My Reservation the controller:: {reservations} {DateTime.UtcNow}!");
@@ -55,9 +57,9 @@ namespace ReservationApi.Controllers
 
 
         [HttpGet("{id:length(24)}", Name = "GetReservation")]
-        public ActionResult<Reservation> Get(string id)
+        public async Task<ActionResult<Reservation>> Get(string id)
         {
-            var reservation = _reservationService.Get(id);
+            var reservation = await _reservationService.Get(id).ConfigureAwait(true);
 
             if (reservation == null)
             {
@@ -78,7 +80,7 @@ namespace ReservationApi.Controllers
         [HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, Reservation reservationIn)
         {
-            var reservation = _reservationService.Get(id);
+            var reservation = _reservationService.Get(id).Result;
 
             if (reservation == null)
             {
@@ -93,7 +95,7 @@ namespace ReservationApi.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
-            var reservation = _reservationService.Get(id);
+            var reservation = _reservationService.Get(id).Result;
 
             if (reservation == null)
             {
