@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +27,7 @@ namespace ReservationApi.Controllers
 
 
 
-
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -43,19 +44,28 @@ namespace ReservationApi.Controllers
             _config = config;
             
         }
+
+
+        /// <summary>
+        /// Gets all Reservation.
+        /// </summary>
         [Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
         [HttpGet]
         public async Task<ActionResult<List<Reservation>>> Get() {
-            var c = _config["ConnectionString"];
+            
            var reservations =  await _reservationService.Get().ConfigureAwait(true);
+           
             //Session 2\
-            Log.Information($"Config Secret: {c}");
-            Log.Information($"In My Reservation the controller:: {reservations} {DateTime.UtcNow}!");
+            Log.Information($"Created Reservation the controller:: {reservations} {DateTime.UtcNow}!");
 
             return reservations;
-        } 
+        }
 
 
+        /// <summary>
+        /// Gets a specific Reservation.
+        /// </summary>
+        /// <param name="id"></param> 
         [HttpGet("{id:length(24)}", Name = "GetReservation")]
         public async Task<ActionResult<Reservation>> Get(string id)
         {
@@ -69,7 +79,30 @@ namespace ReservationApi.Controllers
             return reservation;
         }
 
+        /// <summary>
+        /// Creates a Reservation.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Reservation 
+        ///     {
+        ///        
+        ///       "Name": "string",
+        ///       "Price": 0,
+        ///       "RoomId": "string",
+        ///       "FromDate": "string",
+        ///       "ToDate": "string"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="reservation"></param>
+        /// <returns>A newly created Reservation</returns>
+        /// <response code="201">Returns the newly created Reservation </response>
+        /// <response code="400">If the Reservation is null</response>            
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Reservation> Create(Reservation reservation)
         {
             _reservationService.Create(reservation);
@@ -77,6 +110,12 @@ namespace ReservationApi.Controllers
             return CreatedAtRoute("GetReservation", new { id = reservation.Id.ToString() }, reservation);
         }
 
+
+
+        /// <summary>
+        /// Updates a specific Reservation.
+        /// </summary>
+        /// <param name="id"></param> 
         [HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, Reservation reservationIn)
         {
@@ -91,7 +130,10 @@ namespace ReservationApi.Controllers
 
             return NoContent();
         }
-
+        /// <summary>
+        /// Deletes a specific Reservation.
+        /// </summary>
+        /// <param name="id"></param> 
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
