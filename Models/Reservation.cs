@@ -1,13 +1,10 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ReservationApi.Repos;
 
 namespace ReservationApi.Models
 {
-    public class Reservation
+    public class Reservation : BaseEntity
     {
 
 
@@ -19,9 +16,6 @@ namespace ReservationApi.Models
         // The BookName property is annotated with the[BsonElement] attribute. The attribute's 
         //    value of Name represents the property name in the MongoDB collection.
 
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string Id { get; set; }
         [JsonProperty("Name")]
         [BsonElement("Name")]
         public string Name { get; set; }

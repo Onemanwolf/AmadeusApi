@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using ReservationApi.Models;
 using ReservationApi.Services;
 using Serilog;
-using Serilog.Core;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ReservationApi.Controllers
 {
@@ -26,34 +26,33 @@ namespace ReservationApi.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ReservationController : ControllerBase
     {
 
         private readonly ReservationService _reservationService;
-        
+
 
         public ReservationController(ReservationService bookService)
         {
             _reservationService = bookService;
-            
+
         }
-        [Authorize]  //Session 3
         [HttpGet]
-        public ActionResult<List<Reservation>> Get() {
-           
-           var reservations = _reservationService.Get();
+        public async Task<ActionResult<List<Reservation>>> Get()
+        {
+
+            var reservations = await _reservationService.GetAsync();
 
             Log.Information($"In My Reservation the controller:: {reservations} {DateTime.UtcNow}!");
 
             return reservations;
-        } 
+        }
 
 
         [HttpGet("{id:length(24)}", Name = "GetReservation")]
-        public ActionResult<Reservation> Get(string id)
+        public async Task<ActionResult<Reservation>> Get(string id)
         {
-            var reservation = _reservationService.Get(id);
+            var reservation = await _reservationService.GetAsync(id);
 
             if (reservation == null)
             {
@@ -64,42 +63,41 @@ namespace ReservationApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Reservation> Create(Reservation reservation)
+        public async Task<ActionResult<Reservation>> Create(Reservation reservation)
         {
-            _reservationService.Create(reservation);
+            await _reservationService.CreateAsync(reservation);
 
             return CreatedAtRoute("GetReservation", new { id = reservation.Id.ToString() }, reservation);
         }
 
         [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, Reservation reservationIn)
+        public async Task<IActionResult> Update(string id, Reservation reservationIn)
         {
-            var reservation = _reservationService.Get(id);
+            var reservation = await _reservationService.GetAsync(id);
 
             if (reservation == null)
             {
                 return NotFound();
             }
 
-            _reservationService.Update(id, reservationIn);
+            await _reservationService.UpdateAsync(id, reservationIn);
 
             return NoContent();
         }
 
         [HttpDelete("{id:length(24)}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var reservation = _reservationService.Get(id);
+            var reservation = await _reservationService.GetAsync(id);
 
             if (reservation == null)
             {
                 return NotFound();
             }
 
-            _reservationService.Remove(reservation.Id);
+            await _reservationService.RemoveAsync(reservation.Id);
 
             return NoContent();
         }
-
     }
 }

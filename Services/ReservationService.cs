@@ -1,12 +1,15 @@
 ﻿using MongoDB.Driver;
 using ReservationApi.Models;
+using ReservationApi.Repos;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ReservationApi.Services
 {
     public class ReservationService : IReservationService
     {
+        private readonly IRepository<Reservation> _repo;
 
         //Session 1
 
@@ -14,33 +17,32 @@ namespace ReservationApi.Services
         //injection. This technique provides access to the appsettings.json configuration values that were added 
         //in the Add a configuration model section.
 
-        private readonly IMongoCollection<Reservation> _reservation;
 
-        public ReservationService(IMongoCollection<Reservation> collection)
+        public ReservationService(IRepository<Reservation> repo)
         {
-            _reservation = collection;
+            _repo = repo;
         }
 
-        public List<Reservation> Get() =>
-           _reservation.Find(reservation => true).ToList();
+        public async Task<List<Reservation>> GetAsync() =>
+           await _repo.GetAsync();
 
-        public Reservation Get(string id) =>
-            _reservation.Find<Reservation>(book => book.Id == id).FirstOrDefault();
+        public async Task<Reservation> GetAsync(string id) =>
+            await _repo.GetAsync(id);
 
-        public Reservation Create(Reservation reservation)
+        public async Task<Reservation> CreateAsync(Reservation reservation)
         {
-            _reservation.InsertOne(reservation);
+            await _repo.InsertAsync(reservation);
             return reservation;
         }
 
-        public void Update(string id, Reservation reservationIn) =>
-            _reservation.ReplaceOne(book => book.Id == id, reservationIn);
+        public async Task UpdateAsync(string id, Reservation reservationIn) =>
+            await _repo.UpdateAsync(reservationIn);
 
-        public void Remove(Reservation reservationIn) =>
-            _reservation.DeleteOne(book => book.Id == reservationIn.Id);
+        public async Task RemoveAsync(Reservation reservationIn) =>
+            await _repo.DeleteAsync(reservationIn);
 
-        public void Remove(string id) =>
-            _reservation.DeleteOne(reservation => reservation.Id == id);
+        public async Task RemoveAsync(string id) =>
+            await _repo.DeleteAsync(id);
     }
 }
 
