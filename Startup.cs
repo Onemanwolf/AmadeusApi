@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ReservationApi.Models;
+using ReservationApi.Repos;
 using ReservationApi.Services;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -31,12 +30,7 @@ namespace ReservationApi
         public void ConfigureServices(IServiceCollection services)
         {
             //Session 1
-            services.AddMvc(options => {
-                options.ReturnHttpNotAcceptable = true;
-                //XML Formatter
-                options.OutputFormatters.Add(new XmlSerializerOutputFormatter());
-             
-                })
+            services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.UseMemberCasing());
 
@@ -107,13 +101,14 @@ namespace ReservationApi
             {
                 var config = Configuration.GetSection("ReservationDataBaseSettings");
 
-                var client = new MongoClient(Configuration["ConnectionString"]);
+                var client = new MongoClient(config.GetValue<string>("ConnectionString"));
                 var database = client.GetDatabase(config.GetValue<string>("DatabaseName"));
 
                 return database.GetCollection<Reservation>(config.GetValue<string>("ReservationCollectionName"));
             });
 
             services.AddScoped<ReservationService>();
+            services.AddScoped<IRepository<Reservation>, MongoRepository<Reservation>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -125,21 +120,16 @@ namespace ReservationApi
             }
             else
             {
-
-
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
- // Session 3
+
+            // Session 3
             app.UseAuthentication();
-
-
-
             app.UseHttpsRedirection();
-            //Session 2
-           
-            app.UseSwagger();
 
+            //Session 2
+            app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
@@ -150,9 +140,6 @@ namespace ReservationApi
                 c.RoutePrefix = string.Empty;
             });
 
-
-
-           
             app.UseMvc();
         }
     }

@@ -9,11 +9,11 @@ namespace ReservationApi.Services
     //Session 1
     public interface IReservationService
     {
-        Reservation Create(Reservation reservation);
-        Task<List<Reservation>> Get();
-        Task<Reservation> Get(string id);
-        void Remove(Reservation reservationIn);
-        void Remove(string id);
-        void Update(string id, Reservation reservationIn);
+        Task<Reservation> CreateAsync(Reservation reservation);
+        Task<List<Reservation>> GetAsync();
+        Task<Reservation> GetAsync(string id);
+        Task RemoveAsync(Reservation reservationIn);
+        Task RemoveAsync(string id);
+        Task UpdateAsync(string id, Reservation reservationIn);
     }
 }
