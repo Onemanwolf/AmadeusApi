@@ -98,7 +98,7 @@ namespace ReservationApi
             {
                 var config = Configuration.GetSection("ReservationDataBaseSettings");
 
-                var client = new MongoClient(Configuration["ConnectionString"]);
+                var client = new MongoClient(config.GetValue<string>("ConnectionString"));
                 var database = client.GetDatabase(config.GetValue<string>("DatabaseName"));
 
                 return database.GetCollection<Reservation>(config.GetValue<string>("ReservationCollectionName"));
