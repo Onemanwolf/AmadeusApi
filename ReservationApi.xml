@@ -49,6 +49,8 @@
             Deletes a specific Reservation.
             </summary>
             <param name="id"></param> 
+            <response code="204">Returns when the Reservation is Succesfully Deleted </response>
+            <response code="404">If the Reservation is Not Found</response>
         </member>
         <member name="P:ReservationApi.Models.Reservation.Id">
             <summary>

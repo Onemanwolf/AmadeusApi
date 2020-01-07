@@ -68,12 +68,17 @@ namespace ReservationApi.Controllers
         [HttpGet("{id:length(24)}", Name = "GetReservation")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        /// <response code="200">Returns when the Reservation is found </response>
+        /// <response code="400">If the Reservation is null</response>
+        /// <response code="404">If the Reservation is Not Found</response>
         public async Task<ActionResult<Reservation>> Get(string id)
         {
             var reservation = await _reservationService.GetAsync(id);
 
             if (reservation == null)
             {
+                Log.Information($"Reservation for Id:{id} Not Found");
                 return NotFound();
             }
 
@@ -117,12 +122,15 @@ namespace ReservationApi.Controllers
         /// </summary>
         /// <param name="id"></param> 
         [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> Update(string id, Reservation reservationIn)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Update(string id, Reservation reservationIn)
         {
             var reservation = await _reservationService.GetAsync(id);
 
             if (reservation == null)
             {
+                //status code 404
                 return NotFound();
             }
 
@@ -137,8 +145,12 @@ namespace ReservationApi.Controllers
         /// Deletes a specific Reservation.
         /// </summary>
         /// <param name="id"></param> 
+        /// <response code="204">Returns when the Reservation is Succesfully Deleted </response>
+        /// <response code="404">If the Reservation is Not Found</response>
         [HttpDelete("{id:length(24)}")]
-        public async Task<IActionResult> Delete(string id)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Delete(string id)
         {
             var reservation = await _reservationService.GetAsync(id);
 

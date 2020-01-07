@@ -36,12 +36,24 @@ namespace ReservationApi
             services.AddSwaggerGen(options =>
             {
 
-
+                //Swagger Documentation option
                 options.SwaggerDoc("v1", new Info { 
                     Title = "Reservation Api", 
-                    Version = "v1" 
+                    Version = "v1",
+                    Description = "Amadeus Api for Training",
+                    Contact = new Contact { 
+                        Email = "timothy.oleson@microsoft.com",
+                        Name = "Tim Oleson",
+                        Url = "https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.2"
+                    },
+                    License = new License
+                    {
+                        Name = "MIT License",
+                        Url = "https://opensource.org/licenses/MIT"
+                    }
                 });
 
+                //Include XML comments in you Api Documentation 
                 // Open Project Properties under Build Tab in Output section check xml documentation file change value to ReservationApi
                 //Use Reflection to file name 
                 var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
