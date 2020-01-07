@@ -28,7 +28,7 @@ namespace ReservationApi.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ReservationController : ControllerBase
     {
 
@@ -47,7 +47,7 @@ namespace ReservationApi.Controllers
         /// Get all Reservations.
         /// </summary>
         [HttpGet]
-        [Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
+        //[Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
         public async Task<ActionResult<List<Reservation>>> GetAsync()
         {
             var reservations = await _reservationService.GetAsync();
@@ -65,7 +65,7 @@ namespace ReservationApi.Controllers
         /// <response code="200">Returns when the Reservation is found </response>
         /// <response code="400">If the Reservation is null</response>
         /// <response code="404">If the Reservation is Not Found</response>
-        [HttpGet("{id:length(24)}", Name = "GetReservation")]
+        [HttpGet("{id}", Name = "GetReservation")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -127,7 +127,7 @@ namespace ReservationApi.Controllers
         /// <param name="reservationIn"></param>
         /// <response code="204">Returns when the Reservation is Succesfully Updated </response>
         /// <response code="404">If the Reservation is Not Found</response>
-        [HttpPut("{id:length(24)}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateAsync(string id, Reservation reservationIn)
@@ -151,7 +151,7 @@ namespace ReservationApi.Controllers
         /// <param name="id"></param> 
         /// <response code="204">Returns when the Reservation is Succesfully Deleted </response>
         /// <response code="404">If the Reservation is Not Found</response>
-        [HttpDelete("{id:length(24)}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteAsync(string id)

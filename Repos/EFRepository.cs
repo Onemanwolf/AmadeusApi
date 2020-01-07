@@ -44,6 +44,8 @@ namespace ReservationApi.Repos
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity), "entity cannot be null");
 
+            entity.Id = Guid.NewGuid().ToString();
+
             var newEntity = await _entities.AddAsync(entity);
             await _context.SaveChangesAsync();
             return newEntity.Entity;

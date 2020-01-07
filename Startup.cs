@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
+using ReservationApi.DependencyInjection;
 using ReservationApi.Models;
 using ReservationApi.Repos;
 using ReservationApi.Services;
@@ -97,18 +98,9 @@ namespace ReservationApi
             //injected, the interface instance resolves to a BookstoreDatabaseSettings object.
 
             //configure mongodb connection and register an instance of IMongoCollection for use in service
-            services.AddScoped<IMongoCollection<Reservation>>(sp =>
-            {
-                var config = Configuration.GetSection("ReservationDataBaseSettings");
-
-                var client = new MongoClient(config.GetValue<string>("ConnectionString"));
-                var database = client.GetDatabase(config.GetValue<string>("DatabaseName"));
-
-                return database.GetCollection<Reservation>(config.GetValue<string>("ReservationCollectionName"));
-            });
 
             services.AddScoped<ReservationService>();
-            services.AddScoped<IRepository<Reservation>, MongoRepository<Reservation>>();
+            services.AddEFCoreDatabaseSupport(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
