@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using ReservationApi.Models;
 using ReservationApi.Services;
 using Serilog;
@@ -27,10 +28,13 @@ namespace ReservationApi.Controllers
 
 
 
-    [Produces("application/json")]
+    [Produces("application/json", "application/xml")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ReservationController : ControllerBase
     {
 
@@ -51,6 +55,9 @@ namespace ReservationApi.Controllers
         /// </summary>
         [Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<List<Reservation>>> Get() {
             
            var reservations =  await _reservationService.Get().ConfigureAwait(true);
@@ -68,7 +75,6 @@ namespace ReservationApi.Controllers
         /// <param name="id"></param> 
         [HttpGet("{id:length(24)}", Name = "GetReservation")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         /// <response code="200">Returns when the Reservation is found </response>
         /// <response code="400">If the Reservation is null</response>
@@ -108,21 +114,25 @@ namespace ReservationApi.Controllers
         /// <response code="201">Returns the newly created Reservation </response>
         /// <response code="400">If the Reservation is null</response>            
         [HttpPost]
+        //Input content Type
+        [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Reservation> Create(Reservation reservation)
         {
+           //todo: add insert model 
             _reservationService.Create(reservation);
 
             return CreatedAtRoute("GetReservation", new { id = reservation.Id.ToString() }, reservation);
         }
 
-        
+
         /// <summary>
         /// Updates a specific Reservation.
         /// </summary>
-        /// <param name="id"></param> 
+        /// <param name="id"></param>
+        /// <param name="reservationIn"></param> 
         [HttpPut("{id:length(24)}")]
+        [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Update(string id, Reservation reservationIn)

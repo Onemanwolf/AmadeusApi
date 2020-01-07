@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ReservationApi.Models;
 using ReservationApi.Services;
@@ -29,8 +31,14 @@ namespace ReservationApi
         public void ConfigureServices(IServiceCollection services)
         {
             //Session 1
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options => options.UseMemberCasing());
+            services.AddMvc(options => {
+                options.ReturnHttpNotAcceptable = true;
+                //XML Formatter
+                options.OutputFormatters.Add(new XmlSerializerOutputFormatter());
+             
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options => options.UseMemberCasing());
 
             services.AddSwaggerGen(options =>
             {

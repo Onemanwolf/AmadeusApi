@@ -42,7 +42,8 @@
             <summary>
             Updates a specific Reservation.
             </summary>
-            <param name="id"></param> 
+            <param name="id"></param>
+            <param name="reservationIn"></param> 
         </member>
         <member name="M:ReservationApi.Controllers.ReservationController.Delete(System.String)">
             <summary>
