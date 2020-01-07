@@ -69,6 +69,7 @@ namespace ReservationApi.Controllers
         [HttpGet("{id:length(24)}", Name = "GetReservation")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<Reservation>> Get(string id)
         {
             var reservation = await _reservationService.Get(id).ConfigureAwait(true);
@@ -118,12 +119,15 @@ namespace ReservationApi.Controllers
         /// </summary>
         /// <param name="id"></param> 
         [HttpPut("{id:length(24)}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Update(string id, Reservation reservationIn)
         {
             var reservation = _reservationService.Get(id).Result;
 
             if (reservation == null)
             {
+                //status code 404
                 return NotFound();
             }
 
@@ -139,6 +143,8 @@ namespace ReservationApi.Controllers
         /// </summary>
         /// <param name="id"></param> 
         [HttpDelete("{id:length(24)}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult Delete(string id)
         {
             var reservation = _reservationService.Get(id).Result;

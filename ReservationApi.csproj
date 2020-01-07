@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+      <!--Removes warning from code base Xml Swagger documentation-->
     <NoWarn>$(NoWarn);1591</NoWarn>
 
   </PropertyGroup>
