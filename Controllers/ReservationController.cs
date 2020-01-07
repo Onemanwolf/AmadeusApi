@@ -67,6 +67,8 @@ namespace ReservationApi.Controllers
         /// </summary>
         /// <param name="id"></param> 
         [HttpGet("{id:length(24)}", Name = "GetReservation")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Reservation>> Get(string id)
         {
             var reservation = await _reservationService.Get(id).ConfigureAwait(true);
@@ -110,8 +112,7 @@ namespace ReservationApi.Controllers
             return CreatedAtRoute("GetReservation", new { id = reservation.Id.ToString() }, reservation);
         }
 
-
-
+        
         /// <summary>
         /// Updates a specific Reservation.
         /// </summary>
@@ -130,6 +131,9 @@ namespace ReservationApi.Controllers
 
             return NoContent();
         }
+
+
+
         /// <summary>
         /// Deletes a specific Reservation.
         /// </summary>

@@ -8,8 +8,11 @@ using MongoDB.Driver;
 using ReservationApi.Models;
 using ReservationApi.Services;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace ReservationApi
 {
@@ -33,7 +36,19 @@ namespace ReservationApi
             {
 
 
-                options.SwaggerDoc("v1", new Info { Title = "Reservation Api", Version = "v1" });
+                options.SwaggerDoc("v1", new Info { 
+                    Title = "Reservation Api", 
+                    Version = "v1" 
+                });
+
+                // Open Project Properties under Build Tab in Output section check xml documentation file change value to ReservationApi
+                //Use Reflection to file name 
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+
+                //use full path
+                options.IncludeXmlComments(xmlCommentsFullPath);
+
                 options.AddSecurityDefinition("Bearer",
                   new ApiKeyScheme
                   {
@@ -95,8 +110,14 @@ namespace ReservationApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+ // Session 3
+            app.UseAuthentication();
 
+
+
+            app.UseHttpsRedirection();
             //Session 2
+           
             app.UseSwagger();
 
 
@@ -111,13 +132,7 @@ namespace ReservationApi
 
 
 
-
-            // Session 3
-            app.UseAuthentication();
-
-
-
-            app.UseHttpsRedirection();
+           
             app.UseMvc();
         }
     }
