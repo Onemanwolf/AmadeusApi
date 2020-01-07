@@ -50,7 +50,7 @@ namespace ReservationApi.Controllers
         /// </summary>
         [Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
         [HttpGet]
-        public async Task<ActionResult<List<Reservation>>> Get()
+        public async Task<ActionResult<List<Reservation>>> GetAsync()
         {
 
             var reservations = await _reservationService.GetAsync();
@@ -72,7 +72,7 @@ namespace ReservationApi.Controllers
         /// <response code="200">Returns when the Reservation is found </response>
         /// <response code="400">If the Reservation is null</response>
         /// <response code="404">If the Reservation is Not Found</response>
-        public async Task<ActionResult<Reservation>> Get(string id)
+        public async Task<ActionResult<Reservation>> GetAsync(string id)
         {
             var reservation = await _reservationService.GetAsync(id);
 
@@ -109,7 +109,7 @@ namespace ReservationApi.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Reservation> Create(Reservation reservation)
+        public async Task<ActionResult<Reservation>> CreateAsync(Reservation reservation)
         {
             await _reservationService.CreateAsync(reservation);
 
@@ -124,7 +124,7 @@ namespace ReservationApi.Controllers
         [HttpPut("{id:length(24)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Update(string id, Reservation reservationIn)
+        public async Task<IActionResult> UpdateAsync(string id, Reservation reservationIn)
         {
             var reservation = await _reservationService.GetAsync(id);
 
@@ -150,7 +150,7 @@ namespace ReservationApi.Controllers
         [HttpDelete("{id:length(24)}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> DeleteAsync(string id)
         {
             var reservation = await _reservationService.GetAsync(id);
 
