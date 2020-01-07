@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using Microsoft.ApplicationInsights.Extensibility;
+﻿using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.ApplicationInsights;
+using System;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ReservationApi
 {
@@ -19,7 +14,7 @@ namespace ReservationApi
     {
         public static void Main(string[] args)
         {
-           
+
 
             CreateWebHostBuilder(args).Build().Run();
             //Session 2
@@ -51,30 +46,29 @@ namespace ReservationApi
         //WebHost and Generic Host Explained 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((context, config) =>
-            {
-                if (context.HostingEnvironment.IsDevelopment())
+                .ConfigureAppConfiguration((context, config) =>
                 {
-                    var builtConfig = config.Build();
-
-                    using (var store = new X509Store(StoreName.My, StoreLocation.CurrentUser))
+                    if (context.HostingEnvironment.IsProduction())
                     {
-                        store.Open(OpenFlags.ReadOnly);
-                        var certs = store.Certificates
-                            .Find(X509FindType.FindByThumbprint,
-                                builtConfig["AzureADCertThumbprint"], false);
+                        var builtConfig = config.Build();
 
-                        config.AddAzureKeyVault(
-                            $"https://{builtConfig["KeyVaultName"]}.vault.azure.net/",
-                            builtConfig["AzureADApplicationId"],
-                            certs.OfType<X509Certificate2>().Single());
+                        using (var store = new X509Store(StoreName.My, StoreLocation.CurrentUser))
+                        {
+                            store.Open(OpenFlags.ReadOnly);
+                            var certs = store.Certificates
+                                .Find(X509FindType.FindByThumbprint,
+                                    builtConfig["AzureADCertThumbprint"], false);
 
-                        store.Close();
-                       
+                            config.AddAzureKeyVault(
+                                $"https://{builtConfig["KeyVaultName"]}.vault.azure.net/",
+                                builtConfig["AzureADApplicationId"],
+                                certs.OfType<X509Certificate2>().Single());
+
+                            store.Close();
+
+                        }
                     }
-                   
-                }
-            })
+                })
                 .UseStartup<Startup>()
                 .UseSerilog();
     }

@@ -31,7 +31,8 @@ namespace ReservationApi
         {
             //Session 1
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options => options.UseMemberCasing());
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options => options.UseMemberCasing());
 
             services.AddSwaggerGen(options =>
             {
@@ -100,14 +101,13 @@ namespace ReservationApi
             {
                 var config = Configuration.GetSection("ReservationDataBaseSettings");
 
-                var client = new MongoClient(Configuration["ConnectionString"]);
+                var client = new MongoClient(config.GetValue<string>("ConnectionString"));
                 var database = client.GetDatabase(config.GetValue<string>("DatabaseName"));
 
                 return database.GetCollection<Reservation>(config.GetValue<string>("ReservationCollectionName"));
             });
 
             services.AddScoped<ReservationService>();
-
             services.AddScoped<IRepository<Reservation>, MongoRepository<Reservation>>();
         }
 
@@ -120,21 +120,16 @@ namespace ReservationApi
             }
             else
             {
-
-
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
- // Session 3
+
+            // Session 3
             app.UseAuthentication();
-
-
-
             app.UseHttpsRedirection();
-            //Session 2
-           
-            app.UseSwagger();
 
+            //Session 2
+            app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
@@ -145,9 +140,6 @@ namespace ReservationApi
                 c.RoutePrefix = string.Empty;
             });
 
-
-
-           
             app.UseMvc();
         }
     }
