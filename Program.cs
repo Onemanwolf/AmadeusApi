@@ -50,7 +50,7 @@ namespace ReservationApi
                 {
 
                     //Toggle for development and production 
-                    if (context.HostingEnvironment.IsDevelopment())
+                    if (context.HostingEnvironment.IsProduction())
                     {
                         var builtConfig = config.Build();
 

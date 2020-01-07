@@ -28,7 +28,7 @@ namespace ReservationApi.Controllers
     [Produces("application/json", "application/xml")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -37,7 +37,7 @@ namespace ReservationApi.Controllers
 
         private readonly ReservationService _reservationService;
         private readonly IConfiguration _config;
-        
+
 
         public ReservationController(ReservationService bookService, IConfiguration config)
         {
@@ -53,7 +53,7 @@ namespace ReservationApi.Controllers
         /// <response code="400">If the Reservation is null</response>
         /// <response code="404">If the Reservation is Not Found</response>
         [HttpGet]
-        [Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
+        //[Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<Reservation>>> GetAsync()
@@ -115,7 +115,7 @@ namespace ReservationApi.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-                public async Task<ActionResult<Reservation>> CreateAsync(Reservation reservation)
+        public async Task<ActionResult<Reservation>> CreateAsync(Reservation reservation)
         {
             if (reservation == null)
                 return BadRequest("No Reservation supplied");
@@ -140,7 +140,6 @@ namespace ReservationApi.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-       
         public async Task<IActionResult> UpdateAsync(string id, Reservation reservationIn)
         {
             var reservation = await _reservationService.GetAsync(id);

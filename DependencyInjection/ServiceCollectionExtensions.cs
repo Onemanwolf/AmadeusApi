@@ -17,10 +17,10 @@ namespace ReservationApi.DependencyInjection
             {
                 var config = configuration.GetSection("ReservationDataBaseSettings");
 
-                var client = new MongoClient(config.GetValue<string>("ConnectionString"));
-                var database = client.GetDatabase(config.GetValue<string>("DatabaseName"));
+                var client = new MongoClient(config["ConnectionString"]);
+                var database = client.GetDatabase(config["DatabaseName"]);
 
-                return database.GetCollection<Reservation>(config.GetValue<string>("ReservationCollectionName"));
+                return database.GetCollection<Reservation>(config["ReservationCollectionName"]);
             });
 
             services.TryAddScoped<IRepository<Reservation>, MongoRepository<Reservation>>();

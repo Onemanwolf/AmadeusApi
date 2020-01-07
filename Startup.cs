@@ -5,10 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
 using ReservationApi.DependencyInjection;
-using ReservationApi.Models;
-using ReservationApi.Repos;
 using ReservationApi.Services;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -32,7 +29,8 @@ namespace ReservationApi
         public void ConfigureServices(IServiceCollection services)
         {
             //Session 1
-            services.AddMvc(options => {
+            services.AddMvc(options =>
+            {
                 options.ReturnHttpNotAcceptable = true;
                 //XML Formatter
                 options.OutputFormatters.Add(new XmlSerializerOutputFormatter());
@@ -44,11 +42,13 @@ namespace ReservationApi
             {
 
                 //Swagger Documentation option
-                options.SwaggerDoc("v1", new Info { 
-                    Title = "Reservation Api", 
+                options.SwaggerDoc("v1", new Info
+                {
+                    Title = "Reservation Api",
                     Version = "v1",
                     Description = "Amadeus Api for Training",
-                    Contact = new Contact { 
+                    Contact = new Contact
+                    {
                         Email = "timothy.oleson@microsoft.com",
                         Name = "Tim Oleson",
                         Url = "https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.2"
@@ -105,7 +105,9 @@ namespace ReservationApi
             //configure mongodb connection and register an instance of IMongoCollection for use in service
 
             services.AddScoped<ReservationService>();
-            services.AddEFCoreDatabaseSupport(Configuration);
+
+            //services.AddEFCoreDatabaseSupport(Configuration);
+            services.AddMongoDatabaseSupport(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
