@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using ReservationApi.Models;
 using ReservationApi.Services;
 using Serilog;
@@ -31,19 +32,22 @@ namespace ReservationApi.Controllers
     {
 
         private readonly ReservationService _reservationService;
+        private readonly IConfiguration _config;
         
 
-        public ReservationController(ReservationService bookService)
+        public ReservationController(ReservationService bookService, IConfiguration config)
         {
             _reservationService = bookService;
+            _config = config;
             
         }
-        [Authorize]  //Session 3
+        [Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
         [HttpGet]
         public ActionResult<List<Reservation>> Get() {
-           
+            var c = _config["ConnectionString"];
            var reservations = _reservationService.Get();
-
+            //Session 2\
+            Log.Information($"Config Secret: {c}");
             Log.Information($"In My Reservation the controller:: {reservations} {DateTime.UtcNow}!");
 
             return reservations;
