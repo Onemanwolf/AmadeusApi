@@ -25,16 +25,19 @@ namespace ReservationApi.Controllers
 
 
 
-    [Produces("application/json")]
+    [Produces("application/json", "application/xml")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ReservationController : ControllerBase
     {
 
         private readonly ReservationService _reservationService;
         private readonly IConfiguration _config;
-        
+
 
         public ReservationController(ReservationService bookService, IConfiguration config)
         {
@@ -46,8 +49,13 @@ namespace ReservationApi.Controllers
         /// <summary>
         /// Get all Reservations.
         /// </summary>
+        /// <response code="200">Returns when the Reservation is found </response>
+        /// <response code="400">If the Reservation is null</response>
+        /// <response code="404">If the Reservation is Not Found</response>
         [HttpGet]
         [Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<Reservation>>> GetAsync()
         {
             var reservations = await _reservationService.GetAsync();
@@ -104,6 +112,7 @@ namespace ReservationApi.Controllers
         /// <response code="201">Returns the newly created Reservation </response>
         /// <response code="400">If the Reservation is null</response>            
         [HttpPost]
+        [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Reservation>> CreateAsync(Reservation reservation)
@@ -127,6 +136,7 @@ namespace ReservationApi.Controllers
         /// <param name="reservationIn"></param>
         /// <response code="204">Returns when the Reservation is Succesfully Updated </response>
         /// <response code="404">If the Reservation is Not Found</response>
+        [Consumes("application/json")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
