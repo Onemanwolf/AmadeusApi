@@ -18,7 +18,7 @@
             <response code="400">If the Reservation is null</response>
             <response code="404">If the Reservation is Not Found</response>
         </member>
-        <member name="M:ReservationApi.Controllers.ReservationController.CreateAsync(ReservationApi.Models.Reservation)">
+        <member name="M:ReservationApi.Controllers.ReservationController.CreateAsync(ReservationApi.Data.Models.Reservation)">
              <summary>
              Create a Reservation.
              </summary>
@@ -41,7 +41,7 @@
              <response code="201">Returns the newly created Reservation </response>
              <response code="400">If the Reservation is null</response>            
         </member>
-        <member name="M:ReservationApi.Controllers.ReservationController.UpdateAsync(System.String,ReservationApi.Models.Reservation)">
+        <member name="M:ReservationApi.Controllers.ReservationController.UpdateAsync(System.String,ReservationApi.Data.Models.Reservation)">
             <summary>
             Update a specific reservation
             </summary>
