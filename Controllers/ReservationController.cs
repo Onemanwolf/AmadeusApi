@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ReservationApi.Data.Models;
@@ -27,7 +28,7 @@ namespace ReservationApi.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ReservationController : ControllerBase
     {
 
@@ -46,7 +47,7 @@ namespace ReservationApi.Controllers
         /// Get all Reservations.
         /// </summary>
         [HttpGet]
-        //[Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
+        [Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
         public async Task<ActionResult<List<Reservation>>> GetAsync()
         {
             var reservations = await _reservationService.GetAsync();

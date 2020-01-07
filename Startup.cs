@@ -98,6 +98,7 @@ namespace ReservationApi
             //configure mongodb connection and register an instance of IMongoCollection for use in service
 
             services.AddScoped<ReservationService>();
+
             //services.AddEFCoreDatabaseSupport(Configuration);
             services.AddMongoDatabaseSupport(Configuration);
         }
