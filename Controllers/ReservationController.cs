@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using ReservationApi.Models;
 using ReservationApi.Services;
 using Serilog;
-using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -51,12 +50,12 @@ namespace ReservationApi.Controllers
         /// </summary>
         [Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
         [HttpGet]
-        public async Task<ActionResult<List<Reservation>>> Get() {
-            
-           var reservations =  await _reservationService.Get().ConfigureAwait(true);
-           
-            //Session 2\
-            Log.Information($"Created Reservation the controller:: {reservations} {DateTime.UtcNow}!");
+        public async Task<ActionResult<List<Reservation>>> Get()
+        {
+
+            var reservations = await _reservationService.GetAsync();
+
+            Log.Information($"In My Reservation the controller:: {reservations} {DateTime.UtcNow}!");
 
             return reservations;
         }
@@ -71,7 +70,7 @@ namespace ReservationApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Reservation>> Get(string id)
         {
-            var reservation = await _reservationService.Get(id).ConfigureAwait(true);
+            var reservation = await _reservationService.GetAsync(id);
 
             if (reservation == null)
             {
@@ -107,7 +106,7 @@ namespace ReservationApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Reservation> Create(Reservation reservation)
         {
-            _reservationService.Create(reservation);
+            await _reservationService.CreateAsync(reservation);
 
             return CreatedAtRoute("GetReservation", new { id = reservation.Id.ToString() }, reservation);
         }
@@ -118,16 +117,16 @@ namespace ReservationApi.Controllers
         /// </summary>
         /// <param name="id"></param> 
         [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, Reservation reservationIn)
+        public async Task<IActionResult> Update(string id, Reservation reservationIn)
         {
-            var reservation = _reservationService.Get(id).Result;
+            var reservation = await _reservationService.GetAsync(id);
 
             if (reservation == null)
             {
                 return NotFound();
             }
 
-            _reservationService.Update(id, reservationIn);
+            await _reservationService.UpdateAsync(id, reservationIn);
 
             return NoContent();
         }
@@ -139,19 +138,18 @@ namespace ReservationApi.Controllers
         /// </summary>
         /// <param name="id"></param> 
         [HttpDelete("{id:length(24)}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var reservation = _reservationService.Get(id).Result;
+            var reservation = await _reservationService.GetAsync(id);
 
             if (reservation == null)
             {
                 return NotFound();
             }
 
-            _reservationService.Remove(reservation.Id);
+            await _reservationService.RemoveAsync(reservation.Id);
 
             return NoContent();
         }
-
     }
 }

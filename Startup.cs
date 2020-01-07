@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using ReservationApi.Models;
+using ReservationApi.Repos;
 using ReservationApi.Services;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -94,6 +95,8 @@ namespace ReservationApi
             });
 
             services.AddScoped<ReservationService>();
+
+            services.AddScoped<IRepository<Reservation>, MongoRepository<Reservation>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

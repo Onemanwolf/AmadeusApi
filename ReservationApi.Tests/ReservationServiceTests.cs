@@ -1,7 +1,11 @@
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using MongoDB.Driver;
 using Moq;
 using ReservationApi.Models;
 using ReservationApi.Services;
+using ReservationApi.Tests.Mongo;
 using System;
+using System.Threading;
 using Xunit;
 
 namespace ReservationApi.Tests
@@ -12,23 +16,18 @@ namespace ReservationApi.Tests
         public void ReservationService_Add_Reservation()
         {
             //arrange
-            var resSvcMock = new Mock<IReservationService>();
+            var mongoCollMock = new Mock<IFakeMongoCollection>();
 
-            var newReservation = new Reservation
-            {
-                Id = "myid",
-                Name = "ResName",
-                RoomId = "roomid",
-                Price = 2,
-                FromDate = DateTime.Now.ToString(),
-                ToDate = DateTime.Now.Add(new TimeSpan(1, 0, 0)).ToString()
-            };
+            mongoCollMock.Setup(x => x.Find(x => x.Id == It.IsAny<string>(), new FindOptions())).Verifiable();
 
-            resSvcMock.Setup(x => x.Create(newReservation)).Returns(newReservation);
+            //var reservationSvc = new ReservationService(mongoCollMock.Object);
 
             //act
+            //var result = reservationSvc.GetAsync("1");
 
             //assert
+            mongoCollMock.Verify();
+
         }
     }
 }
