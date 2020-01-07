@@ -48,7 +48,9 @@ namespace ReservationApi
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, config) =>
                 {
-                    if (context.HostingEnvironment.IsProduction())
+
+                    //Toggle for development and production 
+                    if (context.HostingEnvironment.IsDevelopment())
                     {
                         var builtConfig = config.Build();
 

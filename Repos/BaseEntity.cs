@@ -5,7 +5,9 @@ namespace ReservationApi.Repos
 {
     public abstract class BaseEntity
     {
-        [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+       // [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
         public string Id { get; set; }
     }
 }
