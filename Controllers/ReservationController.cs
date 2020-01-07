@@ -62,13 +62,13 @@ namespace ReservationApi.Controllers
         /// Get a specific Reservation.
         /// </summary>
         /// <param name="id"></param> 
+        /// <response code="200">Returns when the Reservation is found </response>
+        /// <response code="400">If the Reservation is null</response>
+        /// <response code="404">If the Reservation is Not Found</response>
         [HttpGet("{id:length(24)}", Name = "GetReservation")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        /// <response code="200">Returns when the Reservation is found </response>
-        /// <response code="400">If the Reservation is null</response>
-        /// <response code="404">If the Reservation is Not Found</response>
         public async Task<ActionResult<Reservation>> GetAsync(string id)
         {
             var reservation = await _reservationService.GetAsync(id);
@@ -125,7 +125,8 @@ namespace ReservationApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="reservationIn"></param>
-        /// <returns></returns>
+        /// <response code="204">Returns when the Reservation is Succesfully Updated </response>
+        /// <response code="404">If the Reservation is Not Found</response>
         [HttpPut("{id:length(24)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
