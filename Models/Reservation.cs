@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 using ReservationApi.Repos;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReservationApi.Models
 {

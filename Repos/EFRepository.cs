@@ -41,6 +41,9 @@ namespace ReservationApi.Repos
 
         public async Task<T> InsertAsync(T entity)
         {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity), "entity cannot be null");
+
             var newEntity = await _entities.AddAsync(entity);
             await _context.SaveChangesAsync();
             return newEntity.Entity;

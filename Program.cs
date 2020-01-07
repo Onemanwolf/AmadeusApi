@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using Microsoft.ApplicationInsights.Extensibility;
+﻿using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.ApplicationInsights;
+using System;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ReservationApi
 {
@@ -19,7 +14,7 @@ namespace ReservationApi
     {
         public static void Main(string[] args)
         {
-           
+
 
             CreateWebHostBuilder(args).Build().Run();
             //Session 2
@@ -53,7 +48,7 @@ namespace ReservationApi
             WebHost.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((context, config) =>
             {
-                if (context.HostingEnvironment.IsDevelopment())
+                if (context.HostingEnvironment.IsProduction())
                 {
                     var builtConfig = config.Build();
 
@@ -70,9 +65,9 @@ namespace ReservationApi
                             certs.OfType<X509Certificate2>().Single());
 
                         store.Close();
-                       
+
                     }
-                   
+
                 }
             })
                 .UseStartup<Startup>()

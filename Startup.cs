@@ -31,16 +31,19 @@ namespace ReservationApi
         {
             //Session 1
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options => options.UseMemberCasing());
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options => options.UseMemberCasing());
 
             services.AddSwaggerGen(options =>
             {
-
-
-                options.SwaggerDoc("v1", new Info { 
-                    Title = "Reservation Api", 
-                    Version = "v1" 
-                });
+                options.SwaggerDoc(
+                    "v1",
+                    new Info
+                    {
+                        Title = "Reservation Api",
+                        Version = "v1"
+                    }
+                );
 
                 // Open Project Properties under Build Tab in Output section check xml documentation file change value to ReservationApi
                 //Use Reflection to file name 
@@ -50,30 +53,37 @@ namespace ReservationApi
                 //use full path
                 options.IncludeXmlComments(xmlCommentsFullPath);
 
-                options.AddSecurityDefinition("Bearer",
-                  new ApiKeyScheme
-                  {
-                      In = "header",
-                      Description = "Please enter into field the word 'Bearer' following by space and JWT",
-                      Name = "Authorization",
-                      Type = "apiKey"
-                  });
-                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
-                { "Bearer", Enumerable.Empty<string>() },
-             });
+                options.AddSecurityDefinition(
+                    "Bearer",
+                    new ApiKeyScheme
+                    {
+                        In = "header",
+                        Description = "Please enter into field the word 'Bearer' following by space and JWT",
+                        Name = "Authorization",
+                        Type = "apiKey"
+                    }
+                );
+
+                options.AddSecurityRequirement(
+                    new Dictionary<string, IEnumerable<string>>
+                    {
+                        { "Bearer", Enumerable.Empty<string>() },
+                    }
+                );
             });
 
 
             //Session 3
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-             .AddJwtBearer(options =>
-             {
-                 // base-address of your identityserver
-                 options.Authority = "https://localhost:5001/";
+                .AddJwtBearer(options =>
+                {
+                    // base-address of your identityserver
+                    options.Authority = "https://localhost:5001/";
 
-                 // name of the API resource
-                 options.Audience = "reservationapi";
-             });
+                    // name of the API resource
+                    options.Audience = "reservationapi";
+                }
+            );
 
             //Session 1
             //The configuration instance to which the appsettings.json file's BookstoreDatabaseSettings section binds is 
@@ -95,7 +105,6 @@ namespace ReservationApi
             });
 
             services.AddScoped<ReservationService>();
-
             services.AddScoped<IRepository<Reservation>, MongoRepository<Reservation>>();
         }
 
@@ -108,21 +117,16 @@ namespace ReservationApi
             }
             else
             {
-
-
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
- // Session 3
+
+            // Session 3
             app.UseAuthentication();
-
-
-
             app.UseHttpsRedirection();
-            //Session 2
-           
-            app.UseSwagger();
 
+            //Session 2
+            app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
@@ -133,9 +137,6 @@ namespace ReservationApi
                 c.RoutePrefix = string.Empty;
             });
 
-
-
-           
             app.UseMvc();
         }
     }

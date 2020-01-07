@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Configuration;
 using ReservationApi.Models;
 using ReservationApi.Services;
@@ -68,7 +67,7 @@ namespace ReservationApi.Controllers
         [HttpGet("{id:length(24)}", Name = "GetReservation")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Reservation>> Get(string id)
+        public async Task<ActionResult<Reservation>> GetAsync(string id)
         {
             var reservation = await _reservationService.GetAsync(id);
 
@@ -104,18 +103,22 @@ namespace ReservationApi.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Reservation> Create(Reservation reservation)
+        public async Task<ActionResult<Reservation>> CreateAsync(Reservation reservation)
         {
+            if (reservation == null)
+                return BadRequest("No Reservation supplied");
+
             await _reservationService.CreateAsync(reservation);
 
-            return CreatedAtRoute("GetReservation", new { id = reservation.Id.ToString() }, reservation);
+            return CreatedAtRoute("GetReservation", new { id = reservation.Id }, reservation);
         }
 
-        
         /// <summary>
-        /// Updates a specific Reservation.
+        /// Updates a specific reservation
         /// </summary>
-        /// <param name="id"></param> 
+        /// <param name="id"></param>
+        /// <param name="reservationIn"></param>
+        /// <returns></returns>
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Update(string id, Reservation reservationIn)
         {
