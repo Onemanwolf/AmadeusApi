@@ -60,7 +60,7 @@ namespace ReservationApi.Controllers
         {
             var reservations = await _reservationService.GetAsync();
 
-            Log.Information($"In My Reservation the controller:: {reservations} {DateTime.UtcNow}!");
+            Log.Information($"In My Reservation the controller Reservation count:: {reservations.Count} Date: {DateTime.UtcNow}!");
 
             return reservations;
         }
