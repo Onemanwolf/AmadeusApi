@@ -1,5 +1,5 @@
 ﻿using MongoDB.Driver;
-using ReservationApi.Models;
+using ReservationApi.Data.Models;
 
 namespace ReservationApi.Tests.Mongo
 {

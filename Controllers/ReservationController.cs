@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using ReservationApi.Models;
+using ReservationApi.Data.Models;
 using ReservationApi.Services;
 using Serilog;
 using System;
@@ -28,7 +28,7 @@ namespace ReservationApi.Controllers
     [Produces("application/json", "application/xml")]
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -53,7 +53,7 @@ namespace ReservationApi.Controllers
         /// <response code="400">If the Reservation is null</response>
         /// <response code="404">If the Reservation is Not Found</response>
         [HttpGet]
-        //[Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
+        [Authorize]  //Session 3 Identity Server OpenID Connect OAuth Bearer Token
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<Reservation>>> GetAsync()

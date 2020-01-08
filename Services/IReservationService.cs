@@ -1,4 +1,4 @@
-﻿using ReservationApi.Models;
+﻿using ReservationApi.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
