@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -26,7 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ReservationApi.csproj" />
+    <ProjectReference Include="..\ReservationApi.Data.EFCore\ReservationApi.Data.EFCore.csproj" />
+    <ProjectReference Include="..\ReservationApi.Data.MongoDb\ReservationApi.Data.MongoDb.csproj" />
+    <ProjectReference Include="..\ReservationApi.Data\ReservationApi.Data.csproj" />
   </ItemGroup>
 
 </Project>
