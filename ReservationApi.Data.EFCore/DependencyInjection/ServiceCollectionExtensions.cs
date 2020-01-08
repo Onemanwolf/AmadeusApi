@@ -19,7 +19,5 @@ namespace ReservationApi.Data.EFCore.DependencyInjection
             services.TryAddScoped<DbContext, ReservationContext>();
             services.TryAddScoped<IRepository<Reservation>, EFRepository<Reservation>>();
         }
-
-        //private static void 
     }
 }

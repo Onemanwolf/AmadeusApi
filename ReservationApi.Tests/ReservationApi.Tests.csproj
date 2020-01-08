@@ -24,9 +24,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\ReservationApi.csproj" />
+    <ProjectReference Include="..\ReservationApi.Data\ReservationApi.Data.csproj" />
+    <ProjectReference Include="..\ReservationApi\ReservationApi.csproj" />
   </ItemGroup>
 
 </Project>

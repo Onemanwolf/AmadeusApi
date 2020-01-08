@@ -1,13 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MongoDB.Driver;
-using ReservationApi.Contexts;
-using ReservationApi.Models;
-using ReservationApi.Repos;
+using ReservationApi.Data.Intefaces;
+using ReservationApi.Data.Models;
+using ReservationApi.Data.MongoDb.Repos;
 
-namespace ReservationApi.DependencyInjection
+namespace ReservationApi.Data.MongoDb.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
@@ -24,15 +23,6 @@ namespace ReservationApi.DependencyInjection
             });
 
             services.TryAddScoped<IRepository<Reservation>, MongoRepository<Reservation>>();
-        }
-
-        public static void AddEFCoreDatabaseSupport(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddDbContext<ReservationContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
-            services.TryAddScoped<DbContext, ReservationContext>();
-            services.TryAddScoped<IRepository<Reservation>, EFRepository<Reservation>>();
         }
     }
 }

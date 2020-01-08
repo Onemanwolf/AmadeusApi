@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReservationApi.Data.EFCore.DependencyInjection;
 using ReservationApi.Data.MongoDb.DependencyInjection;
+using ReservationApi.DependencyInjection;
 using ReservationApi.Services;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -39,61 +40,12 @@ namespace ReservationApi
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.UseMemberCasing());
 
-            services.AddSwaggerGen(options =>
-            {
-
-                //Swagger Documentation option
-                options.SwaggerDoc("v1", new Info
-                {
-                    Title = "Reservation Api",
-                    Version = "v1",
-                    Description = "Amadeus Api for Training",
-                    Contact = new Contact
-                    {
-                        Email = "timothy.oleson@microsoft.com",
-                        Name = "Tim Oleson",
-                        Url = "https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.2"
-                    },
-                    License = new License
-                    {
-                        Name = "MIT License",
-                        Url = "https://opensource.org/licenses/MIT"
-                    }
-                });
-
-                //Include XML comments in you Api Documentation 
-                // Open Project Properties under Build Tab in Output section check xml documentation file change value to ReservationApi
-                //Use Reflection to file name 
-                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
-
-                //use full path
-                options.IncludeXmlComments(xmlCommentsFullPath);
-
-                options.AddSecurityDefinition("Bearer",
-                  new ApiKeyScheme
-                  {
-                      In = "header",
-                      Description = "Please enter into field the word 'Bearer' following by space and JWT",
-                      Name = "Authorization",
-                      Type = "apiKey"
-                  });
-                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
-                { "Bearer", Enumerable.Empty<string>() },
-             });
-            });
+            ///Swagger
+            services.AddSwaggerConfiguration(Configuration);
 
 
-            //Session 3
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-             .AddJwtBearer(options =>
-             {
-                 // base-address of your identityserver
-                 options.Authority = "https://localhost:5001/";
-
-                 // name of the API resource
-                 options.Audience = "reservationapi";
-             });
+            //Session 3 Add Auth
+            services.AddAuthConfiguration(Configuration);
 
             //Session 1
             //The configuration instance to which the appsettings.json file's BookstoreDatabaseSettings section binds is 
@@ -109,6 +61,9 @@ namespace ReservationApi
 
             //services.AddEFCoreDatabaseSupport(Configuration);
             services.AddMongoDatabaseSupport(Configuration);
+
+            services.AddCorsConfiguration(Configuration);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
