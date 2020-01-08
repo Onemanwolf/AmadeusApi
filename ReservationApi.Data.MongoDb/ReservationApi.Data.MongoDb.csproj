@@ -10,7 +10,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ReservationApi.Data.EFCore\ReservationApi.Data.EFCore.csproj" />
     <ProjectReference Include="..\ReservationApi.Data\ReservationApi.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DependencyInjection\ServiceCollectionExtensions.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>
