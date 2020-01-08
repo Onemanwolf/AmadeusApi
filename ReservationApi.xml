@@ -8,6 +8,9 @@
             <summary>
             Get all Reservations.
             </summary>
+            <response code="200">Returns when the Reservation is found </response>
+            <response code="400">If the Reservation is null</response>
+            <response code="404">If the Reservation is Not Found</response>
         </member>
         <member name="M:ReservationApi.Controllers.ReservationController.GetAsync(System.String)">
             <summary>
