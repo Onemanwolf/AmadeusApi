@@ -14,6 +14,9 @@ namespace ReservationApi
     {
         public static void Main(string[] args)
         {
+
+
+            CreateWebHostBuilder(args).Build().Run();
             //Session 2
             var _appInsightConfiguration = new TelemetryConfiguration() { InstrumentationKey = "153fa963-4f48-4576-85a8-2076571d33fe" };
 
@@ -35,9 +38,6 @@ namespace ReservationApi
 
             // Serilog Log Info 
             Log.Information($"Log this Serilog {DateTime.Now} UTC {DateTime.UtcNow}");
-
-            CreateWebHostBuilder(args).Build().Run();
-           
 
 
         }
