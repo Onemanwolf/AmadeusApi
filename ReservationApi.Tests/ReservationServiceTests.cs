@@ -1,6 +1,7 @@
-using MongoDB.Driver;
 using Moq;
-using ReservationApi.Tests.Mongo;
+using ReservationApi.Data.Intefaces;
+using ReservationApi.Data.Models;
+using ReservationApi.Services;
 using Xunit;
 
 namespace ReservationApi.Tests
@@ -8,21 +9,19 @@ namespace ReservationApi.Tests
     public class ReservationServiceTests
     {
         [Fact]
-        public void ReservationService_Add_Reservation()
+        public void ReservationService_Get_Reservation_Verify()
         {
             //arrange
-            var mongoCollMock = new Mock<IFakeMongoCollection>();
+            var mockRepo = new Mock<IRepository<Reservation>>();
+            mockRepo.Setup(x => x.GetAsync(It.IsAny<string>())).Verifiable();
 
-            //mongoCollMock.Setup(x => x.Find(x => x.Id == It.IsAny<string>(), new FindOptions())).Verifiable();
-
-            //var reservationSvc = new ReservationService(mongoCollMock.Object);
+            var reservationSvc = new ReservationService(mockRepo.Object);
 
             //act
-            //var result = reservationSvc.GetAsync("1");
+            var result = reservationSvc.GetAsync("1");
 
             //assert
-            mongoCollMock.Verify();
-
+            mockRepo.Verify();
         }
     }
 }
