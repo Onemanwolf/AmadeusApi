@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ReservationApi.Data.Intefaces;
+using ReservationApi.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ReservationApi.Repos
+namespace ReservationApi.Data.EFCore.Repos
 {
     public class EFRepository<T> : IRepository<T> where T : BaseEntity
     {

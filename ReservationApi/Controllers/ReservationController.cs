@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using ReservationApi.Models;
+using ReservationApi.Data.Models;
 using ReservationApi.Services;
 using Serilog;
 using System;

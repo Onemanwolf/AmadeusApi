@@ -1,8 +1,6 @@
-﻿using MongoDB.Driver;
-using ReservationApi.Models;
-using ReservationApi.Repos;
+﻿using ReservationApi.Data.Intefaces;
+using ReservationApi.Data.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ReservationApi.Services

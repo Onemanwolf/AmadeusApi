@@ -1,8 +1,10 @@
 ﻿using MongoDB.Driver;
+using ReservationApi.Data.Intefaces;
+using ReservationApi.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ReservationApi.Repos
+namespace ReservationApi.Data.MongoDb.Repos
 {
     public class MongoRepository<T> : IRepository<T> where T : BaseEntity
     {

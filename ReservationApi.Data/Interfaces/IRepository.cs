@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ReservationApi.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ReservationApi.Repos
+namespace ReservationApi.Data.Intefaces
 {
     public interface IRepository<T> where T : BaseEntity
     {

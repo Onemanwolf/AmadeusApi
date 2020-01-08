@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReservationApi.Models;
+using ReservationApi.Data.Models;
 
-namespace ReservationApi.Contexts
+namespace ReservationApi.Data.EFCore.Contexts
 {
     public class ReservationContext : DbContext
     {

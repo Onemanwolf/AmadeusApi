@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationApi", "ReservationApi.csproj", "{5B1A1904-92E8-473C-BA0B-CAB4E9C6D266}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationApi.Tests", "ReservationApi.Tests\ReservationApi.Tests.csproj", "{DF3EFE6C-8BCC-4094-BF90-3CB82843C8F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0253B0FF-20CF-4788-BD22-BE1BE93D516E}"
@@ -12,20 +10,40 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationApi.Data", "ReservationApi.Data\ReservationApi.Data.csproj", "{51F6EBCB-FC62-44DF-AD52-573267886D0C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationApi.Data.EFCore", "ReservationApi.Data.EFCore\ReservationApi.Data.EFCore.csproj", "{B3C37220-BAB2-47CA-B6B8-C94E22500041}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationApi.Data.MongoDb", "ReservationApi.Data.MongoDb\ReservationApi.Data.MongoDb.csproj", "{18C38664-40D5-44B4-BCA4-A614A2D07135}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationApi", "ReservationApi\ReservationApi.csproj", "{9CFA221D-8790-466D-90D6-D1253741246A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5B1A1904-92E8-473C-BA0B-CAB4E9C6D266}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B1A1904-92E8-473C-BA0B-CAB4E9C6D266}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B1A1904-92E8-473C-BA0B-CAB4E9C6D266}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B1A1904-92E8-473C-BA0B-CAB4E9C6D266}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF3EFE6C-8BCC-4094-BF90-3CB82843C8F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF3EFE6C-8BCC-4094-BF90-3CB82843C8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF3EFE6C-8BCC-4094-BF90-3CB82843C8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF3EFE6C-8BCC-4094-BF90-3CB82843C8F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51F6EBCB-FC62-44DF-AD52-573267886D0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51F6EBCB-FC62-44DF-AD52-573267886D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51F6EBCB-FC62-44DF-AD52-573267886D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51F6EBCB-FC62-44DF-AD52-573267886D0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3C37220-BAB2-47CA-B6B8-C94E22500041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3C37220-BAB2-47CA-B6B8-C94E22500041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3C37220-BAB2-47CA-B6B8-C94E22500041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3C37220-BAB2-47CA-B6B8-C94E22500041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18C38664-40D5-44B4-BCA4-A614A2D07135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18C38664-40D5-44B4-BCA4-A614A2D07135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18C38664-40D5-44B4-BCA4-A614A2D07135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18C38664-40D5-44B4-BCA4-A614A2D07135}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CFA221D-8790-466D-90D6-D1253741246A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CFA221D-8790-466D-90D6-D1253741246A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CFA221D-8790-466D-90D6-D1253741246A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CFA221D-8790-466D-90D6-D1253741246A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
