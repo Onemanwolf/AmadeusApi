@@ -9,6 +9,7 @@ using ReservationApi.Data.EFCore.DependencyInjection;
 using ReservationApi.Data.MongoDb.DependencyInjection;
 using ReservationApi.DependencyInjection;
 using ReservationApi.Services;
+using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
@@ -82,7 +83,7 @@ namespace ReservationApi
             // Session 3
             app.UseAuthentication();
             app.UseHttpsRedirection();
-
+            app.UseSerilogRequestLogging();
             //Session 2
             app.UseSwagger();
 

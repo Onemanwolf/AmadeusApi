@@ -12,34 +12,48 @@ namespace ReservationApi
 {
     public class Program
     {
+
+
+        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
+           .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+           .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+           .AddEnvironmentVariables()
+
+           .Build();
+
         public static void Main(string[] args)
         {
 
 
+
+
+            var _appInsightConfiguration = new TelemetryConfiguration() { InstrumentationKey = Configuration["InstrumentationKey"] };
+                Log.Logger = new LoggerConfiguration()
+               .MinimumLevel.Debug()
+               .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+               //.WriteTo.MSSqlServer(Configuration.GetConnectionString("LogConnection"), "_logs", columnOptions: columnOptions)
+               .Enrich.FromLogContext()
+               // Log to Console provider
+               .WriteTo.Console()
+               //Log to Application Insights Provider 
+               //App Insights configuration and Converter Type set to Event 
+               .WriteTo.ApplicationInsights(_appInsightConfiguration, TelemetryConverter.Events)
+               .CreateLogger();
+
+
+                // Serilog Log Info 
+                Log.Information($"Application started using Serilog for logging{DateTime.Now} UTC {DateTime.UtcNow}");
+           
+        
+
+
+
+            //Session 2
+           
+
             CreateWebHostBuilder(args).Build().Run();
-            //Session 2
-            var _appInsightConfiguration = new TelemetryConfiguration() { InstrumentationKey = "153fa963-4f48-4576-85a8-2076571d33fe" };
-
-
-
-            //Session 2
-            Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-            //.WriteTo.MSSqlServer(Configuration.GetConnectionString("LogConnection"), "_logs", columnOptions: columnOptions)
-            .Enrich.FromLogContext()
-            // Log to Console provider
-            .WriteTo.Console()
-            //Log to Application Insights Provider 
-            //App Insights configuration and Converter Type set to Event 
-            .WriteTo.ApplicationInsights(_appInsightConfiguration, TelemetryConverter.Events)
-            .CreateLogger();
-
-
-            // Serilog Log Info 
-            Log.Information($"Log this Serilog {DateTime.Now} UTC {DateTime.UtcNow}");
-
-
+          
         }
 
 
