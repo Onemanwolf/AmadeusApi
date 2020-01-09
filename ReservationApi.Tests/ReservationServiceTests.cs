@@ -55,5 +55,56 @@ namespace ReservationApi.Tests
             //assert
             _mockRepo.Verify();
         }
+
+        [Fact]
+        public void ReservationService_Delete_Reservation_Verify()
+        {
+            //arrange
+            var reservation = new Reservation
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Special Meeting",
+                RoomId = "101",
+                FromDate = DateTime.Today.ToString(),
+                ToDate = DateTime.Today.AddDays(1).ToString(),
+                Price = 1
+            };
+
+            _mockRepo.Setup(x => x.DeleteAsync(It.IsAny<Reservation>())).Verifiable();
+
+            var reservationSvc = new ReservationService(_mockRepo.Object);
+
+            //act
+            var result = reservationSvc.RemoveAsync(reservation);
+
+            //assert
+            _mockRepo.Verify();
+        }
+
+        [Fact]
+        public void ReservationService_Update_Reservation_Verify()
+        {
+            //arrange
+            var reservation = new Reservation
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Special Meeting",
+                RoomId = "101",
+                FromDate = DateTime.Today.ToString(),
+                ToDate = DateTime.Today.AddDays(1).ToString(),
+                Price = 1
+            };
+
+            _mockRepo.Setup(x => x.UpdateAsync(It.IsAny<Reservation>())).Verifiable();
+
+            var reservationSvc = new ReservationService(_mockRepo.Object);
+
+            //act
+            var result = reservationSvc.UpdateAsync(reservation.Id, reservation);
+
+            //assert
+            _mockRepo.Verify();
+        }
+
     }
 }

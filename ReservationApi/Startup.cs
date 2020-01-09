@@ -1,21 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReservationApi.Data.EFCore.DependencyInjection;
-using ReservationApi.Data.MongoDb.DependencyInjection;
 using ReservationApi.DependencyInjection;
 using ReservationApi.Services;
-using Serilog;
-using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 
 namespace ReservationApi
 {
@@ -58,10 +49,10 @@ namespace ReservationApi
 
             //configure mongodb connection and register an instance of IMongoCollection for use in service
 
-            services.AddScoped<ReservationService>();
+            services.AddScoped<IReservationService, ReservationService>();
 
-            //services.AddEFCoreDatabaseSupport(Configuration);
-            services.AddMongoDatabaseSupport(Configuration);
+            services.AddSqlDatabaseSupport(Configuration);
+            //services.AddMongoDatabaseSupport(Configuration);
 
             services.AddCorsConfiguration(Configuration);
 
@@ -83,7 +74,7 @@ namespace ReservationApi
             // Session 3
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseSerilogRequestLogging();
+
             //Session 2
             app.UseSwagger();
 
