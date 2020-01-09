@@ -34,17 +34,12 @@ namespace ReservationApi.Controllers
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ReservationController : ControllerBase
     {
+        private readonly IReservationService _reservationService;
 
-        private readonly ReservationService _reservationService;
-        private readonly IConfiguration _config;
-
-
-        public ReservationController(ReservationService bookService, IConfiguration config)
+        public ReservationController(IReservationService reservationSvc)
         {
-            _reservationService = bookService;
-            _config = config;
+            _reservationService = reservationSvc;
         }
-
 
         /// <summary>
         /// Get all Reservations.
