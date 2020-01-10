@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReservationApi.Data.EFCore.DependencyInjection;
+using ReservationApi.Data.MongoDb.DependencyInjection;
 using ReservationApi.DependencyInjection;
 using ReservationApi.Services;
 
@@ -22,7 +23,6 @@ namespace ReservationApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Session 1
             services.AddMvc(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
@@ -32,27 +32,10 @@ namespace ReservationApi
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.UseMemberCasing());
 
-            ///Swagger
-            services.AddSwaggerConfiguration(Configuration);
-
-
-            //Session 3 Add Auth
-            services.AddAuthConfiguration(Configuration);
-
-            //Session 1
-            //The configuration instance to which the appsettings.json file's BookstoreDatabaseSettings section binds is 
-            //registered in the Dependency Injection (DI) container. For example, a BookstoreDatabaseSettings object's 
-            //ConnectionString property is populated with the BookstoreDatabaseSettings:ConnectionString property in 
-            //appsettings.json.
-            //The IBookstoreDatabaseSettings interface is registered in DI with a singleton service lifetime.When 
-            //injected, the interface instance resolves to a BookstoreDatabaseSettings object.
-
-            //configure mongodb connection and register an instance of IMongoCollection for use in service
-
             services.AddScoped<IReservationService, ReservationService>();
 
-            services.AddSqlDatabaseSupport(Configuration);
-            //services.AddMongoDatabaseSupport(Configuration);
+            //services.AddSqlDatabaseSupport(Configuration);
+            services.AddMongoDatabaseSupport(Configuration);
 
             services.AddCorsConfiguration(Configuration);
 
@@ -74,18 +57,6 @@ namespace ReservationApi
             // Session 3
             app.UseAuthentication();
             app.UseHttpsRedirection();
-
-            //Session 2
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Reservation Api");
-
-                //c.DocExpansion(DocExpansion.None);
-
-                c.RoutePrefix = string.Empty;
-            });
 
             app.UseMvc();
         }
