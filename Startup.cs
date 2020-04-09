@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using ReservationApi.Models;
 using ReservationApi.Repos;
@@ -27,25 +29,22 @@ namespace ReservationApi
         public void ConfigureServices(IServiceCollection services)
         {
             //Session 1
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options => options.UseMemberCasing());
+            services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;});
 
             services.AddSwaggerGen(options =>
             {
 
 
-                options.SwaggerDoc("v1", new Info { Title = "Reservation Api", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Reservation Api", Version = "v1" });
                 options.AddSecurityDefinition("Bearer",
-                  new ApiKeyScheme
+                  new OpenApiSecurityScheme
                   {
-                      In = "header",
+                      In = ParameterLocation.Header,
                       Description = "Please enter into field the word 'Bearer' following by space and JWT",
                       Name = "Authorization",
-                      Type = "apiKey"
+                      Type = SecuritySchemeType.ApiKey
                   });
-                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
-                { "Bearer", Enumerable.Empty<string>() },
-             });
+               // options.AddSecurityRequirement();
             });
 
 
@@ -69,7 +68,7 @@ namespace ReservationApi
             //injected, the interface instance resolves to a BookstoreDatabaseSettings object.
 
             //configure mongodb connection and register an instance of IMongoCollection for use in service
-            services.AddScoped<IMongoCollection<Reservation>>(sp =>
+            services.AddScoped(sp =>
             {
                 var config = Configuration.GetSection("ReservationDataBaseSettings");
 
@@ -121,7 +120,11 @@ namespace ReservationApi
 
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
